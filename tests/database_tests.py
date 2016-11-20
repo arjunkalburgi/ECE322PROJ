@@ -8,3 +8,4 @@ def __init__():
 
 def test_getCurrentTime(): 
 	assert db.getCurrentTime() == strftime("%Y-%m-%d %H:%M:%S")
+
