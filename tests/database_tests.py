@@ -1,12 +1,10 @@
 import sys
-import sqlite3
+from software.app_files import database as db
 from time import strftime
+import pytest
 
-# start sqlite database connection
-def connectDB():
-    global conn
-    global c
-    conn = sqlite3.connect('test_db_files/test.db')
-    conn.row_factory = dict_factory
-    c = conn.cursor()
+def __init__(): 
+	db.connectDB()
 
+def test_getCurrentTime(): 
+	assert db.getCurrentTime() == strftime("%Y-%m-%d %H:%M:%S")
