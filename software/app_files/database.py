@@ -9,7 +9,7 @@ c = None # global for cursor
 def connectDB():
     global conn
     global c
-    conn = sqlite3.connect('test.db')
+    conn = sqlite3.connect('tests/test_db_files/test.db')
     conn.row_factory = dict_factory
     c = conn.cursor()
 

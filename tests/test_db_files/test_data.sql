@@ -29,6 +29,7 @@ INSERT INTO reportedallergies VALUES
 INSERT INTO drugs VALUES
 ("ZMapp", "anti-Ebola"),
 ("Viread", "NNRTI"),
+("Tamiflu", "anti-viral"),
 ("Retrovir", "NNRTI");
 
 INSERT INTO dosage VALUES
