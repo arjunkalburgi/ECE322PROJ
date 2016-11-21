@@ -109,7 +109,10 @@ def test_isChartOpenForPatient():
 	assert db.isChartOpenForPatient("20195") == None
 
 def test_closeChartWithId():
-	assert db.closeChartWithId(chart_id) == null
+	chartid = db.createNewChartForPatient("15384")
+	if db.isChartOpenForPatient("15384") != None: 
+		db.closeChartWithId(chartid)
+		assert db.isChartOpenForPatient("15384") == None
 
 def test_drugAmountForEachDoctor(start, end):
 	assert db.drugAmountForEachDoctor() == null
