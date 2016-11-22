@@ -1,79 +1,88 @@
 import sys
-from software.app_files import classes as cl
-from time import strftime
+from software.app_files.classes import Doctor
+from software.app_files.classes import Nurse
+from software.app_files.classes import Admin
 import pytest
 
 
 # CareStaff
 def test_getCharts():
-	Doc = Doctor(db.getUser())
-	cl.getCharts(self, patient)
+	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+	doc.getCharts(patient)
 
 def test_printChartEntries():
-	Doc = Doctor(db.getUser())
-	cl.printChartEntries(self, patient, chart_id)
+	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+	doc.printChartEntries(patient, chart_id)
 
 def test_getPatient():
-	cl.getPatient(self, hcno)
+	cl.getPatient(hcno)
 
 def test_addSymptom():
-	Doc = Doctor(db.getUser())
-	cl.addSymptom(self, hcno, chart_id, staff_id, symptom)
+	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+	doc.addSymptom(hcno, chart_id, staff_id, symptom)
 
 
 # Doctor Tests
 def test_introduce():
-	cl.introduce(self)
-
+	cl.introduce(
 def test_addDiagnosis():
-	Doc = Doctor(db.getUser())
-	cl.addDiagnosis(self, hcno, chart_id, staff_id, diagnosis)
+	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+	doc.addDiagnosis(hcno, chart_id, staff_id, diagnosis)
 
 def test_checkMedicationAmountValid():
-	Doc = Doctor(db.getUser())
-	cl.checkMedicationAmountValid(self, drug_name, amount, age_group)
+	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+	doc.checkMedicationAmountValid(drug_name, amount, age_group)
 
 def test_getValidMedicationAmount():
-	Doc = Doctor(db.getUser())
-	cl.getValidMedicationAmount(self, drug_name, age_group)
+	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+	doc.getValidMedicationAmount(drug_name, age_group)
 
 def test_checkPatientAllergicToDrug():
-	Doc = Doctor(db.getUser())
-	cl.checkPatientAllergicToDrug(self, hcno, drug_name)
+	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+	doc.checkPatientAllergicToDrug(hcno, drug_name)
 
 def test_checkInferredAllergyToDrug():
-	Doc = Doctor(db.getUser())
-	cl.checkInferredAllergyToDrug(self, hcno, drug_name)
+	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+	doc.checkInferredAllergyToDrug(hcno, drug_name)
 
 def test_addMedication():
-	Doc = Doctor(db.getUser())
-	cl.addMedication(self, hcno, chart_id, staff_id, start_med, end_med, drug_name, amount)
+	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+	doc.addMedication(hcno, chart_id, staff_id, start_med, end_med, drug_name, amount)
 
 
 def test_introduce():
-	cl.introduce(self)
-
+	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
+	nur.introduce(
 def test_newChart():
-	cl.newChart(self, hcno)
+	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
+	nur.newChart(hcno)
 
 def test_newPatient():
-	cl.newPatient(self, hcno, name, age_group, address, phone, emg_phone)
+	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
+	nur.newPatient(hcno, name, age_group, address, phone, emg_phone)
 
 def test_checkIfPatientHasOpenChart():
-	cl.checkIfPatientHasOpenChart(self, hcno)
+	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
+	nur.checkIfPatientHasOpenChart(hcno)
 
 def test_closeChart():
-	cl.closeChart(self, chart_id)
+	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
+	nur.closeChart(chart_id)
 
 
+# Admin tests
 def test_listDrugAmtForEachDoctor():
-	cl.listDrugAmtForEachDoctor(self, start, end)
+	adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
+	adm.listDrugAmtForEachDoctor(start, end)
 
 def test_listDrugAmtForEachCategory():
-	cl.listDrugAmtForEachCategory(self, start, end)
+	adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
+	adm.listDrugAmtForEachCategory(start, end)
 
 def test_listMedicationsForDiagnosis():
-	cl.listMedicationsForDiagnosis(self, diagnosis)
+	adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
+	adm.listMedicationsForDiagnosis(diagnosis)
 
 def test_listDiagnosesMadeBeforePrescribingDrug():
-	cl.listDiagnosesMadeBeforePrescribingDrug(self, drug_name)
+	adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
+	adm.listDiagnosesMadeBeforePrescribingDrug(drug_name)
