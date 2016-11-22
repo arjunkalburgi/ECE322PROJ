@@ -9,7 +9,7 @@ c = None # global for cursor
 def connectDB():
     global conn
     global c
-    conn = sqlite3.connect('tests/test_db_files/test.db')
+    conn = sqlite3.connect('test_db_files/test.db')
     conn.row_factory = dict_factory
     c = conn.cursor()
 
@@ -31,6 +31,8 @@ def encrypt(s):
 
 def getUser(username, password):
     password = encrypt(password)
+    print (username)
+    print (password)
     c.execute("SELECT * FROM staff WHERE login=? AND password=?", (username, password))
     return c.fetchone()
 
