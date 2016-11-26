@@ -45,26 +45,47 @@ def test_introduce():
 def test_addDiagnosis():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	# doc.addDiagnosis(hcno, chart_id, staff_id, diagnosis)
+	# addDiagnosisToChart(hcno, chart_id, staff_id, diagnosis)
 
 def test_checkMedicationAmountValid():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	doc.checkMedicationAmountValid(drug_name, amount, age_group)
+	# return isMedicationAmountValid(drug_name, amount, age_group)
+	# assert db.isMedicationAmountValid("ZMapp", "10", "18-39") == False
+	# assert db.isMedicationAmountValid("ZMapp", "5", "18-39") == True
 
 def test_getValidMedicationAmount():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	doc.getValidMedicationAmount(drug_name, age_group)
+    # validMedicationAmount = db.getValidMedicationAmount("ZMapp", "18-39")
+    # assert validMedicationAmount['drug_name'] == "ZMapp"
+    # assert validMedicationAmount['age_group'] == "18-39"
+    # assert validMedicationAmount['sug_amount'] = 8
 
 def test_checkPatientAllergicToDrug():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
-	doc.checkPatientAllergicToDrug(hcno, drug_name)
+
+	assert doc.checkPatientAllergicToDrug("15384", "Tamiflu") == True
+	assert doc.checkPatientAllergicToDrug("15384", "ZMapp") == False
 
 def test_checkInferredAllergyToDrug():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	doc.checkInferredAllergyToDrug(hcno, drug_name)
+	# return inferredAllergy(hcno, drug_name)
 
 def test_addMedication():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
-	doc.addMedication(hcno, chart_id, staff_id, start_med, end_med, drug_name, amount)
+	doc.addMedication("15384", '10001', '14334', "2015-01-22 19:50:32", "2015-02-22 02:51:33", "Viread", "8")
+
+	entry = db.medicationsForPatientAndChart(hcno, chart_id)
+	assert entry["hcno"] == "15384"
+	assert entry["chart_id"] == '10001'
+	assert entry["staff_id"] == '14334'
+	assert entry["mdate"] == "2015-01-12 02:20:09"
+	assert entry["start_med"] == "2015-01-22 19:50:32"
+	assert entry["end_med"] == "2015-02-22 02:51:33"
+	assert entry["amount"] == "8"
+	assert entry["drug_name"] == "Viread"
 
 
 # Nurse Tests
@@ -75,18 +96,25 @@ def test_introduce():
 def test_newChart():
 	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
 	nur.newChart(hcno)
+	# return createNewChartForPatient(hcno)
 
 def test_newPatient():
 	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
 	nur.newPatient(hcno, name, age_group, address, phone, emg_phone)
+	# createPatient(hcno, name, age_group, address, phone, emg_phone)
 
 def test_checkIfPatientHasOpenChart():
 	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
-	nur.checkIfPatientHasOpenChart(hcno)
+	assert nur.checkIfPatientHasOpenChart("15384") == True
+	assert nur.checkIfPatientHasOpenChart("20195") == False
 
 def test_closeChart():
 	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
-	nur.closeChart(chart_id)
+
+	chartid = db.createNewChartForPatient("15384")
+	if db.isChartOpenForPatient("15384") != None: 
+		nur.closeChart(chart_id)
+		assert db.isChartOpenForPatient("15384") == None
 
 
 # Admin tests

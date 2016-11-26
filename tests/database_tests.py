@@ -151,16 +151,8 @@ def test_inferredAllergy():
 
 
 def test_addMedicationToChart():
-	#place in the database correctly
-	entry = db.addMedicationToChart("15384", '10001', '14334', "2015-01-21 19:50:32", "2015-02-21 02:51:33", "Viread", "8")
-	assert entry["hcno"] == "15384"
-	assert entry["chart_id"] == '10001'
-	assert entry["staff_id"] == '14334'
-	assert entry["mdate"] == "2015-01-12 02:20:09"
-	assert entry["start_med"] == "2015-01-21 19:50:32"
-	assert entry["end_med"] == "2015-02-21 02:51:33"
-	assert entry["amount"] == "8"
-	assert entry["drug_name"] == "Viread"
+	#place in the database
+	db.addMedicationToChart("15384", '10001', '14334', "2015-01-21 19:50:32", "2015-02-21 02:51:33", "Viread", "8")
 	#make sure it's in the db
 	entry = db.medicationsForPatientAndChart(hcno, chart_id)
 	assert entry["hcno"] == "15384"
