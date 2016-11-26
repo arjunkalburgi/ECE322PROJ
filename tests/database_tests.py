@@ -99,7 +99,13 @@ def test_addSymptomToChart():
 
 def test_addDiagnosisToChart():
 	db.addDiagnosisToChart("15384", '10001', '14334', 'Flu')
-	# copy test_diagnosesForPatientAndChart()
+	# diagnosesForPatientAndChart = db.diagnosesForPatientAndChart(hcno, chart_id);
+ #    print(diagnosesForPatientAndChart)
+ #    assert diagnosesForPatientAndChart['chart_id'] == "10001"
+ #    assert diagnosesForPatientAndChart['diagnosis'] == "Ebola"
+ #    assert diagnosesForPatientAndChart['staff_id'] == "14334"
+ #    assert diagnosesForPatientAndChart['ddate'] == "2015-01-11 14:06:01"
+ #    assert diagnosesForPatientAndChart['hcno'] == "15384"
 	assert true == false 
 
 def test_getPatientWithHcno():
