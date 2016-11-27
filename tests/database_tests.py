@@ -57,8 +57,6 @@ def test_symptomsForPatientAndChart():
 	assert entry["staff_id"] == '37225'
 	assert entry["obs_date"] == "2015-01-08 18:22:55"
 	assert entry["symptom"] == "Nausea"
-    
-
 
 def test_diagnosesForPatientAndChart():
     
@@ -87,32 +85,27 @@ def test_medicationsForPatientAndChart():
 
 
 def test_addSymptomToChart():
-    
-    # fix this later
-    hcno = "15384"
-    chart_id = "10001"
-    staff_id = "00001"
-    symptom = "Flue"
-    addSymptomToChart = db.addSymptomToChart(hcno, chart_id, staff_id, symptom)
-    assert true = false
+    addSymptomToChart = db.addSymptomToChart("15384", "10001", "00001", "Flu")
+    entry = db.symptomsForPatientAndChart
+    assert entry["hcno"] == "15384"
+    assert entry["chart_id"] == '10001'
+    assert entry["staff_id"] == '00001'
+    assert entry["obs_date"] == strftime("%Y-%m-%d %H:%M:%S")
+    assert entry["symptom"] == "Flu"
 
 
 def test_addDiagnosisToChart():
 	db.addDiagnosisToChart("15384", '10001', '14334', 'Flu')
-	# diagnosesForPatientAndChart = db.diagnosesForPatientAndChart(hcno, chart_id);
- #    print(diagnosesForPatientAndChart)
- #    assert diagnosesForPatientAndChart['chart_id'] == "10001"
- #    assert diagnosesForPatientAndChart['diagnosis'] == "Ebola"
- #    assert diagnosesForPatientAndChart['staff_id'] == "14334"
- #    assert diagnosesForPatientAndChart['ddate'] == "2015-01-11 14:06:01"
- #    assert diagnosesForPatientAndChart['hcno'] == "15384"
-	assert true == false 
+	entry = db.diagnosesForPatientAndChart("15384", "10001");
+    assert entry['hcno'] == "15384"
+    assert entry['chart_id'] == "10001"
+    assert entry['diagnosis'] == "Ebola"
+    assert entry['staff_id'] == "14334"
+    assert entry['ddate'] == strftime("%Y-%m-%d %H:%M:%S")
 
 def test_getPatientWithHcno():
-
     hcno = "15384"
     getPatientWithHcno = db.getPatientWithHcno(hcno)
-    print (getPatientWithHcno)
     assert getPatientWithHcno['hcno'] == "15384"
     assert getPatientWithHcno['name'] == "Angelina Jolie"
     assert getPatientWithHcno['phone'] == "7801234567"

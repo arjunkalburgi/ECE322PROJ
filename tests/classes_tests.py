@@ -27,13 +27,13 @@ def test_getPatient():
 
 def test_addSymptom():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
-	# doc.addSymptom("15384","10001","00001","Flu")
-	# entry = db.symptomsForPatientAndChart("15384", "10001")
-	# assert entry["hcno"] == "15384"
-	# assert entry["chart_id"] == '10001'
-	# assert entry["staff_id"] == '37225'
-	# assert entry["obs_date"] == "2015-01-08 18:22:55"
-	# assert entry["symptom"] == "Nausea"
+	doc.addSymptom("15384","10001","00001","Flu")
+	entry = db.symptomsForPatientAndChart("15384", "10001")
+	assert entry["hcno"] == "15384"
+	assert entry["chart_id"] == '10001'
+	assert entry["staff_id"] == '37225'
+	assert entry["obs_date"] == "2015-01-08 18:22:55"
+	assert entry["symptom"] == "Nausea"
     assert true = false
 
 
@@ -44,23 +44,26 @@ def test_introduce():
 
 def test_addDiagnosis():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
-	# doc.addDiagnosis(hcno, chart_id, staff_id, diagnosis)
-	# addDiagnosisToChart(hcno, chart_id, staff_id, diagnosis)
+	doc.addDiagnosis("15384", '10001', '14334', 'Flu')
+	entry = db.diagnosesForPatientAndChart("15384", "10001");
+    assert entry['hcno'] == "15384"
+    assert entry['chart_id'] == "10001"
+    assert entry['diagnosis'] == "Ebola"
+    assert entry['staff_id'] == "14334"
+    assert entry['ddate'] == strftime("%Y-%m-%d %H:%M:%S")
 
 def test_checkMedicationAmountValid():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	doc.checkMedicationAmountValid(drug_name, amount, age_group)
-	# return isMedicationAmountValid(drug_name, amount, age_group)
-	# assert db.isMedicationAmountValid("ZMapp", "10", "18-39") == False
-	# assert db.isMedicationAmountValid("ZMapp", "5", "18-39") == True
+	assert doc.checkMedicationAmountValid("ZMapp", "10", "18-39") == False
+	assert doc.checkMedicationAmountValid("ZMapp", "5", "18-39") == True
 
 def test_getValidMedicationAmount():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
-	doc.getValidMedicationAmount(drug_name, age_group)
-    # validMedicationAmount = db.getValidMedicationAmount("ZMapp", "18-39")
-    # assert validMedicationAmount['drug_name'] == "ZMapp"
-    # assert validMedicationAmount['age_group'] == "18-39"
-    # assert validMedicationAmount['sug_amount'] = 8
+	validMedicationAmount = doc.getValidMedicationAmount("ZMapp", "18-39")
+    assert validMedicationAmount['drug_name'] == "ZMapp"
+    assert validMedicationAmount['age_group'] == "18-39"
+    assert validMedicationAmount['sug_amount'] = 8
 
 def test_checkPatientAllergicToDrug():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
