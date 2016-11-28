@@ -135,7 +135,6 @@ def test_isPatientAllergicToDrug():
 	assert db.isPatientAllergicToDrug("15384", "ZMapp") == False
 
 def test_inferredAllergy():
-    # need to fix still
     hcno = ""
     drug_name = ""
     
@@ -156,26 +155,34 @@ def test_addMedicationToChart():
 	assert entry["end_med"] == "2015-02-21 02:51:33"
 	assert entry["amount"] == "8"
 	assert entry["drug_name"] == "Viread"
-
-
 def test_createPatient():
     
-    #fix the assert statement
     hcno = "11111"
     name = "Aaron Philips"
     age_group = "18-39"
     address = "Not quite sure, Edmonton Alberta"
     phone = "1234567890"
     emg_phone = "0987654321"
-    
-    createPatient = createPatient(hcno, name, age_group, address, phone, emg_phone)
-    assert null == null
+    createPatient = db.createPatient(hcno, name, age_group, address, phone, emg_phone)
+    getPatientWithHcno = db.getPatientWithHcno(hcno)
+    assert getPatientWithHcno['hcno'] == "11111"
+    assert getPatientWithHcno['name'] == "Aaron Philips"
+    assert getPatientWithHcno['phone'] == "1234567890"
+    assert getPatientWithHcno['address'] == "Not quite sure, Edmonton Alberta"
+    assert getPatientWithHcno['emg_phone'] == "0987654321"
+    assert getPatientWithHcno['age_group'] == "18-39"
 
 def test_createNewChartForPatient():
-    # fix this
+    ## can have multiple charts for patients?
     hcno = "11111"
     createNewChartForPatient = db.createNewChartForPatient(hcno)
-    assert None == None
+    getChartsForPatient = db.getChartsForPatient(hcno)
+    assert getChartsForPatient['name']="Aaron Philips"
+    assert getChartsForPatient['edate']=None
+    assert getChartsForPatient['phone']="1234567890"
+    assert getChartsForPatient['address']="Not quite sure, Edmonton Alberta"
+    assert getChartsForPatient['emg_phone']="0987654321"
+    assert getPatientWithHcno['age_group']="18-39"
 
 
 def test_isChartOpenForPatient():
@@ -198,8 +205,15 @@ def test_drugAmountForEachDoctor():
     assert drugAmountForEachDoctor['drug_name'] == "ZMapp"
     assert drugAmountForEachDoctor['total_amount'] == "8"
 
+
 def test_drugAmountForEachCategory():
-	assert db.drugAmountForEachCategory(start, end) == null
+    start = "2015-01-11 02:20:09"
+    end = "2015-01-13 02:20:09"
+    drugAmountForEachCategory = db.drugAmountForEachCategory(start,end)
+    assert drugAmountForEachCategory['category'] == "anti-Ebola"
+    assert drugAmountForEachCategory['drug_name'] == "ZMapp"
+    assert drugAmountForEachCategory['amount'] == "8"
+
 
 def test_totalAmountForEachCategory():
     
@@ -218,9 +232,14 @@ def test_totalAmountForEachCategory():
 	assert entry[0]["end_med"] == "2015-02-21 02:51:33"
 	assert entry[0]["amount"] == "8"
 	assert entry[0]["drug_name"] == "ZMapp"
-	
+
 def test_totalAmountForEachCategory(start, end):
-	assert db.totalAmountForEachCategory() == null
+    
+    start = "2015-01-11 02:20:09"
+    end = "2015-01-13 02:20:09"
+    totalAmountForEachCategory = db.totalAmountForEachCategory(start,end)
+    assert totalAmountForEachCategory['category'] == 'anti-Ebola'
+	assert totalAmountForEachCategory['total'] == "8"
 
 
 def test_listMedicationsForDiagnosis():
