@@ -5,7 +5,6 @@ from software.app_files.classes import Admin
 from software.app_files import database as db
 import pytest
 
-
 # CareStaff Tests
 def test_getCharts():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
@@ -122,17 +121,31 @@ def test_closeChart():
 
 # Admin tests
 def test_listDrugAmtForEachDoctor():
-	adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
-	adm.listDrugAmtForEachDoctor(start, end)
+    start = "2015-01-11 19:50:32"
+    end = "2015-01-13 19:50:32"
+    adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
+    adm.listDrugAmtForEachDoctor(start, end)
+
 
 def test_listDrugAmtForEachCategory():
+    start = "2015-01-11 19:50:32"
+    end = "2015-01-13 19:50:32"
 	adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
 	adm.listDrugAmtForEachCategory(start, end)
 
 def test_listMedicationsForDiagnosis():
+    diagnosis = "Ebola"
 	adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
-	adm.listMedicationsForDiagnosis(diagnosis)
+	assert adm.listMedicationsForDiagnosis(diagnosis) == True
+
+    diagnosis = "DoesNotExist"
+    assert adm.listMedicationsForDiagnosis(diagnosis) == False
 
 def test_listDiagnosesMadeBeforePrescribingDrug():
+    drug_name = "ZMapp"
 	adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
-	adm.listDiagnosesMadeBeforePrescribingDrug(drug_name)
+	assert adm.listDiagnosesMadeBeforePrescribingDrug(drug_name) == True
+    drug_name = "Heroin"
+    assert adm.listDiagnosesMadeBeforePrescribingDrug(drug_name) == False
+
+
