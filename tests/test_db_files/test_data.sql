@@ -5,11 +5,13 @@ INSERT INTO staff  VALUES
 
 INSERT INTO patients VALUES
 ('15384','Angelina Jolie','18-39','123-120 ST, Edmonton, Alberta','7801234567','7801234567'),
-('20195','Donald Trump','60-99','23-56 ST, Toronto, Ontario','4162347894','4162347894');
+('20195','Donald Trump','60-99','23-56 ST, Toronto, Ontario','4162347894','4162347894'),
+('15385','Jngelina Aolie','18-39','123-120 ST, Edmonton, Alberta','7801234567','7801234567');
 
 INSERT INTO charts VALUES
 ('10001', '15384', "2015-01-06 12:24:56", "2015-02-13 10:35:42"),
 ('10008', '20195', "2014-07-12 05:45:16", "2014-07-24 03:03:24");
+('10009', '20195', "2014-07-12 05:45:16", "NULL");
 
 INSERT INTO symptoms VALUES
 ("15384", '10001', '37225', "2015-01-08 18:22:55", "Nausea"),
