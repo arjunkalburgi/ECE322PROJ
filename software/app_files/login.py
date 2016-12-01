@@ -18,12 +18,12 @@ def decrypt(s):
 	return r
 
 def beginFlow(user):
-		if user['role'] == 'D':
-			d_flow(user)
-		elif user['role'] == 'N':
-			n_flow(user)
-		elif user['role'] == 'A':
-			a_flow(user)
+	if user['role'] == 'D':
+		d_flow(user)
+	elif user['role'] == 'N':
+		n_flow(user)
+	elif user['role'] == 'A':
+		a_flow(user)
 
 def start():
 	username = raw_input('Please login with your username: ')
