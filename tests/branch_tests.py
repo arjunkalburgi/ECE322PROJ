@@ -129,7 +129,6 @@ def test_classes_Admin_listDiagnosesMadeBeforePrescribingDrug():
 	# if there are no diagnoses before drug
 		assert adm.listDiagnosesMadeBeforePrescribingDrug("Heroin") == False
 	
-
 # From: admin.py
 def test_admin_listMedicationsForDiagnosisFlow(): 
 	'''
@@ -138,8 +137,13 @@ def test_admin_listMedicationsForDiagnosisFlow():
 		if not adm.listMedicationsForDiagnosis(diagnosis):
 			print("That diagnosis is not in the database")
 	'''
-	# test 1 
-	# test 2
+	adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
+	# if there are medications for diagnosis
+		Admin.listMedicationsForDiagnosisFlow(adm)
+		# TODO: how to influence raw_input (write "Ebola") and check that nothing prints?
+	# if there are medications for diagnosis
+		Admin.listMedicationsForDiagnosisFlow(adm)
+		# TODO: how to influence raw_input (write "DoesNotExist") and check that something prints?
 	
 def test_admin_listDiagnosisesForDrugFlow(): 
 	'''
@@ -148,8 +152,13 @@ def test_admin_listDiagnosisesForDrugFlow():
 		if not adm.listDiagnosesMadeBeforePrescribingDrug(drug):
 			print("That drug is not in the database")
 	'''
-	# test 1 
-	# test 2
+	adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
+	# if there are diagnosis for drug
+		Admin.listMedicationsForDiagnosisFlow(adm)
+		# TODO: how to influence raw_input (write "ZMapp") and check that nothing prints?
+	# if there are diagnosis for drug
+		Admin.listMedicationsForDiagnosisFlow(adm)
+		# TODO: how to influence raw_input (write "Heroin") and check that something prints?
 	
 
 # From: nurse.py
@@ -162,8 +171,13 @@ def test_nurse_getPatientFlow():
 			nur.newPatient(patient_hcno, raw_input("Patient name: "), raw_input("Patient age group: "), raw_input("Patient address: "), raw_input("Patient phone number: "), raw_input("Patient emergency number: "))
 		return patient_hcno
 	'''
-	# test 1 
-	# test 2
+	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
+	# if user exists
+		Nurse.getPatientFlow(nur)
+		# TODO: how to influence raw_input (write "15384") and check hcno 15384 is returned - nothing prints
+	# if patient doesn't exist
+		Nurse.getPatientFlow(nur)
+		# TODO: how to influence raw_input (write "35434") and check that something prints
 	
 def test_nurse_selectChart(): 
 	'''
@@ -185,8 +199,10 @@ def test_nurse_selectChart():
 				else:
 					return chartId
 	'''
-	# test 1 
-	# test 2
+	# TODO
+	# patient has open chart; y - opens old chart;
+	# patient has open chart; n - 
+	# patient doesn't have open chart;
 	
 
 # From: doctor.py
@@ -200,8 +216,13 @@ def test_doctor_getChartsFlow():
 			patient_hcno = getChartsFlow(doc)
 		return patient_hcno
 	'''
-	# test 1 
+	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+	# if there is no patient with that hcno 
+		Doctor.getChartsFlow(doc)
+		# TODO on raw input put 15385 and see something should be printed.
 	# test 2
+		Doctor.getChartsFlow(doc) 
+		# TODO on raw input put 15384 and see that nothing is printed.
 	
 def test_doctor_selectChart(): 
 	'''
@@ -212,8 +233,12 @@ def test_doctor_selectChart():
 			selectChart(doc, patient)
 		return chartId
 	'''
-	# test 1 
-	# test 2
+	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+	# if there is no chart id  
+		Doctor.selectChart(doc, "15384")
+		# TODO on raw input put 10551 and see "There was a prob" should be printed.
+	# if there is a chart id
+		# TODO on second raw input prompt put 10001 and see "There was a prob" is not printed.
 	
 def test_doctor_addMedicationFlow(): 
 	'''
@@ -245,6 +270,7 @@ def test_doctor_addMedicationFlow():
 		doc.addMedication(patient["hcno"], chart, doc.id, start_med, end_med, drug, amount)
 		print("Medication has been added to the database.")
 	'''
+	# TODO
 	# test 1 
 	# test 2
 	
@@ -267,6 +293,7 @@ def test_login_start():
 			else:
 				start()
 	'''
+	# TODO
 	# test 1 
 	# test 2
 	

@@ -9,10 +9,12 @@ import pytest
 def test_getCharts():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	doc.getCharts(patient)
+	# TODO
 
 def test_printChartEntries():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	doc.printChartEntries(patient, chart_id)
+	# TODO
 
 def test_getPatient():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
