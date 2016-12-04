@@ -35,9 +35,9 @@ def test_printChartEntries(capsys):
     print (doc.printChartEntries(patient['hcno'], "10001"))
     out=capsys.readouterr()
     print (out)
-    assert out == False
-	# TODO
-'''
+    assert out[0] == '''Symptom 1:\n- chart_id: 10001\n- obs_date: 2015-01-08 18:22:55\n- staff_id: 37225\n- symptom: Nausea\n- hcno: 15384\nDiagn...g_name: ZMapp\n- amount: 8\n- start_med: 2015-01-12 19:50:32\n- end_med: 2015-02-21 02:51:33\n- chart_id: 10001\nTrue\n'''
+
+
 def test_getPatient():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	patient = doc.getPatient("15384")
@@ -149,7 +149,6 @@ def test_listDrugAmtForEachDoctor():
     end = "2015-01-13 19:50:32"
     adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
     adm.listDrugAmtForEachDoctor(start, end)
-
 
 def test_listDrugAmtForEachCategory():
     start = "2015-01-11 19:50:32"
