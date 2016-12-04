@@ -7,7 +7,7 @@ import pytest
 
 db.connectDB()
 
-
+'''
 def teardown_module():
     # reset db
 	f = open('test_db_files/proj_tables.sql','r')
@@ -17,19 +17,27 @@ def teardown_module():
 	sql = f.read()
 	db.c.executescript(sql)
 
+
+'''
 # CareStaff Tests
-def test_getCharts():
+def test_getCharts(capsys):
     doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
-    doc.getCharts(patient)
+    patient = doc.getPatient("15384")
+    doc.getCharts(patient['hcno'])
     out=capsys.readouterr()
     print(out)
-    assert False
-'''
-def test_printChartEntries():
-	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
-	doc.printChartEntries(patient, chart_id)
-	# TODO
+    assert out[0] == '''Charts for patient with health care number 15384:\nChart 1:\n- adate: 2015-01-06 12:24:56\n- name: Angelina Jolie\n- edate: 2015-02-13 10:35:42\n- phone: 7801234567\n- hcno: 15384\n- address: 123-120 ST, Edmonton, Alberta\n- chart_id: 10001\n- emg_phone: 7801234567\n- age_group: 18-39\n'''
 
+
+def test_printChartEntries(capsys):
+    doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+    patient = doc.getPatient("15384")
+    print (doc.printChartEntries("15384", "10001"))
+    out=capsys.readouterr()
+    print (out)
+    assert out == False
+	# TODO
+'''
 def test_getPatient():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	patient = doc.getPatient("15384")
