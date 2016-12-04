@@ -9,6 +9,15 @@ from software.app_files import database as db
 
 from software.app_files import login
 
+db.connectDB()
+
+def teardown_module():
+	f = open('test_db_files/proj_tables.sql','r')
+	sql = f.read()
+	db.c.executescript(sql)
+	f = open('test_db_files/test_data.sql','r')
+	sql = f.read()
+	db.c.executescript(sql)
 
 # From: database.py
 def test_db_createUser(): 

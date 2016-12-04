@@ -7,6 +7,16 @@ import pytest
 
 db.connectDB()
 
+
+def teardown_module():
+    # reset db
+	f = open('test_db_files/proj_tables.sql','r')
+	sql = f.read()
+	db.c.executescript(sql)
+	f = open('test_db_files/test_data.sql','r')
+	sql = f.read()
+	db.c.executescript(sql)
+
 # CareStaff Tests
 def test_getCharts():
     doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
