@@ -5,6 +5,15 @@ import pytest
 
 db.connectDB()
 
+def teardown_module():
+    # reset db
+    f = open('test_db_files/proj_tables.sql','r')
+    sql = f.read()
+    db.c.executescript(sql)
+    f = open('test_db_files/test_data.sql','r')
+    sql = f.read()
+    db.c.executescript(sql)
+
 def test_getCurrentTime():
 	assert db.getCurrentTime() == strftime("%Y-%m-%d %H:%M:%S")
 
