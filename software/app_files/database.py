@@ -31,8 +31,6 @@ def encrypt(s):
 
 def getUser(username, password):
     password = encrypt(password)
-    # print (username)
-    # print (password)
     c.execute("SELECT * FROM staff WHERE login=? AND password=?", (username, password))
     return c.fetchone()
 
