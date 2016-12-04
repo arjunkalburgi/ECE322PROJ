@@ -50,24 +50,23 @@ def test_getChartsForPatient():
 
     patient = '15384'
     chartsForPatients =  db.getChartsForPatient(patient)
-    assert chartsForPatients['adate'] == '015-01-06 12:24:56'
-    assert chartsForPatients['name'] == 'Angelina Jolie'
-    assert chartsForPatients['edate'] == '2015-02-13 10:35:42'
-    assert chartsForPatients['phone'] == '7801234567'
-    assert chartsForPatients['hcno'] == '5384'
-    assert chartsForPatients['address'] == '123-120 ST, Edmonton, Alberta'
-    assert chartsForPatients['chart_id'] == '10001'
-    assert chartsForPatients['emg_phone'] == '7801234567'
-    assert chartsForPatients['age_group'] == '18-39'
-
+    assert chartsForPatients[0]['adate'] == '2015-01-06 12:24:56'
+    assert chartsForPatients[0]['name'] == 'Angelina Jolie'
+    assert chartsForPatients[0]['edate'] == '2015-02-13 10:35:42'
+    assert chartsForPatients[0]['phone'] == '7801234567'
+    assert chartsForPatients[0]['hcno'] == '15384'
+    assert chartsForPatients[0]['address'] == '123-120 ST, Edmonton, Alberta'
+    assert chartsForPatients[0]['chart_id'] == '10001'
+    assert chartsForPatients[0]['emg_phone'] == '7801234567'
+    assert chartsForPatients[0]['age_group'] == '18-39'
 
 def test_symptomsForPatientAndChart():
     entry = db.symptomsForPatientAndChart("15384", "10001")
-    assert entry["hcno"] == "15384"
-    assert entry["chart_id"] == '10001'
-    assert entry["staff_id"] == '37225'
-    assert entry["obs_date"] == "2015-01-08 18:22:55"
-    assert entry["symptom"] == "Nausea"
+    assert entry[0]["hcno"] == "15384"
+    assert entry[0]["chart_id"] == '10001'
+    assert entry[0]["staff_id"] == '37225'
+    assert entry[0]["obs_date"] == "2015-01-08 18:22:55"
+    assert entry[0]["symptom"] == "Nausea"
 
 def test_diagnosesForPatientAndChart():
     
@@ -76,43 +75,43 @@ def test_diagnosesForPatientAndChart():
     
     diagnosesForPatientAndChart = db.diagnosesForPatientAndChart(hcno, chart_id);
     print(diagnosesForPatientAndChart)
-    assert diagnosesForPatientAndChart['chart_id'] == "10001"
-    assert diagnosesForPatientAndChart['diagnosis'] == "Ebola"
-    assert diagnosesForPatientAndChart['staff_id'] == "14334"
-    assert diagnosesForPatientAndChart['ddate'] == "2015-01-11 14:06:01"
-    assert diagnosesForPatientAndChart['hcno'] == "15384"
+    assert diagnosesForPatientAndChart[0]['chart_id'] == "10001"
+    assert diagnosesForPatientAndChart[0]['diagnosis'] == "Ebola"
+    assert diagnosesForPatientAndChart[0]['staff_id'] == "14334"
+    assert diagnosesForPatientAndChart[0]['ddate'] == "2015-01-11 14:06:01"
+    assert diagnosesForPatientAndChart[0]['hcno'] == "15384"
 
 
 def test_medicationsForPatientAndChart():
-    entry = db.medicationsForPatientAndChart(hcno, chart_id)
-    assert entry["hcno"] == "15384"
-    assert entry["chart_id"] == '10001'
-    assert entry["staff_id"] == '14334'
-    assert entry["mdate"] == "2015-01-12 02:20:09"
-    assert entry["start_med"] == "2015-01-12 19:50:32"
-    assert entry["end_med"] == "2015-02-21 02:51:33"
-    assert entry["amount"] == "8"
-    assert entry["drug_name"] == "ZMapp"
+    entry = db.medicationsForPatientAndChart("15384", "10001")
+    assert entry[0]["hcno"] == "15384"
+    assert entry[0]["chart_id"] == '10001'
+    assert entry[0]["staff_id"] == '14334'
+    assert entry[0]["mdate"] == "2015-01-12 02:20:09"
+    assert entry[0]["start_med"] == "2015-01-12 19:50:32"
+    assert entry[0]["end_med"] == "2015-02-21 02:51:33"
+    assert entry[0]["amount"] == 8
+    assert entry[0]["drug_name"] == "ZMapp"
 
 
 def test_addSymptomToChart():
-    addSymptomToChart = db.addSymptomToChart("15384", "10001", "00001", "Flu")
-    entry = db.symptomsForPatientAndChart()
-    assert entry["hcno"] == "15384"
-    assert entry["chart_id"] == '10001'
-    assert entry["staff_id"] == '00001'
-    assert entry["obs_date"] == strftime("%Y-%m-%d %H:%M:%S")
-    assert entry["symptom"] == "Flu"
+    addSymptomToChart = db.addSymptomToChart("15385", "10001", "00001", "Flu")
+    entry = db.symptomsForPatientAndChart("15385", "10001")
+    assert entry[0]["hcno"] == "15385"
+    assert entry[0]["chart_id"] == '10001'
+    assert entry[0]["staff_id"] == '00001'
+    assert entry[0]["obs_date"] == strftime("%Y-%m-%d %H:%M:%S")
+    assert entry[0]["symptom"] == "Flu"
 
 
 def test_addDiagnosisToChart():
     db.addDiagnosisToChart("15384", '10001', '14334', 'Flu')
     entry = db.diagnosesForPatientAndChart("15384", "10001")
-    assert entry['hcno'] == "15384"
-    assert entry['chart_id'] == "10001"
-    assert entry['diagnosis'] == "Ebola"
-    assert entry['staff_id'] == "14334"
-    assert entry['ddate'] == strftime("%Y-%m-%d %H:%M:%S")
+    assert entry[1]['hcno'] == "15384"
+    assert entry[1]['chart_id'] == "10001"
+    assert entry[1]['diagnosis'] == "Flu"
+    assert entry[1]['staff_id'] == "14334"
+    assert entry[1]['ddate'] == strftime("%Y-%m-%d %H:%M:%S")
 
 def test_getPatientWithHcno():
     hcno = "15384"
@@ -157,15 +156,15 @@ def test_addMedicationToChart():
     #place in the database
     db.addMedicationToChart("15384", '10001', '14334', "2015-01-21 19:50:32", "2015-02-21 02:51:33", "Viread", "8")
     #make sure it's in the db
-    entry = db.medicationsForPatientAndChart(hcno, chart_id)
-    assert entry["hcno"] == "15384"
-    assert entry["chart_id"] == '10001'
-    assert entry["staff_id"] == '14334'
-    assert entry["mdate"] == "2015-01-12 02:20:09"
-    assert entry["start_med"] == "2015-01-21 19:50:32"
-    assert entry["end_med"] == "2015-02-21 02:51:33"
-    assert entry["amount"] == "8"
-    assert entry["drug_name"] == "Viread"
+    entry = db.medicationsForPatientAndChart("15384", '10001')
+    assert entry[1]["hcno"] == "15384"
+    assert entry[1]["chart_id"] == '10001'
+    assert entry[1]["staff_id"] == '14334'
+    assert entry[1]["amount"] == 8
+    assert entry[1]["mdate"] == strftime("%Y-%m-%d %H:%M:%S")
+    assert entry[1]["drug_name"] == "Viread"
+    assert entry[1]["start_med"] == "2015-01-21 19:50:32"
+    assert entry[1]["end_med"] == "2015-02-21 02:51:33"
 
 def test_createPatient():
     hcno = "11111"
@@ -185,20 +184,27 @@ def test_createPatient():
 
 def test_createNewChartForPatient():
     ## can have multiple charts for patients?
-    hcno = "11111"
+    hcno = "11121"
+    name = "Aaron Philips"
+    age_group = "18-39"
+    address = "Not quite sure, Edmonton Alberta"
+    phone = "1234567890"
+    emg_phone = "0987654321"
+    createPatient = db.createPatient(hcno, name, age_group, address, phone, emg_phone)
+
     createNewChartForPatient = db.createNewChartForPatient(hcno)
     getChartsForPatient = db.getChartsForPatient(hcno)
-    assert getChartsForPatient['name'] == "Aaron Philips"
-    assert getChartsForPatient['edate'] == None
-    assert getChartsForPatient['phone'] == "1234567890"
-    assert getChartsForPatient['address'] == "Not quite sure, Edmonton Alberta"
-    assert getChartsForPatient['emg_phone'] == "0987654321"
-    assert getPatientWithHcno['age_group'] == "18-39"
+    assert getChartsForPatient[0]['name'] == name
+    assert getChartsForPatient[0]['edate'] == None
+    assert getChartsForPatient[0]['phone'] == phone
+    assert getChartsForPatient[0]['address'] == address
+    assert getChartsForPatient[0]['emg_phone'] == emg_phone
+    assert getChartsForPatient[0]['age_group'] == age_group
 
 
 def test_isChartOpenForPatient():
-    assert db.isChartOpenForPatient("15384") == "10034"
-    assert db.isChartOpenForPatient("20195") == None
+    assert db.isChartOpenForPatient("20195") == "10009"
+    assert db.isChartOpenForPatient("15384") == None
 
 def test_closeChartWithId():
     chartid = db.createNewChartForPatient("15384")
@@ -210,20 +216,19 @@ def test_drugAmountForEachDoctor():
 
     start = "2015-01-11 19:50:32"
     end = "2015-01-13 19:50:32"
-    
     drugAmountForEachDoctor = db.drugAmountForEachDoctor(start,end);
-    assert drugAmountForEachDoctor['name'] == "Phil McGraw"
-    assert drugAmountForEachDoctor['drug_name'] == "ZMapp"
-    assert drugAmountForEachDoctor['total_amount'] == "8"
+    assert drugAmountForEachDoctor[0]["DoctorName"] == "Phil McGraw"
+    assert drugAmountForEachDoctor[0]['drug_name'] == "Viread"
+    assert drugAmountForEachDoctor[0]['total_amount'] == 16
 
 
 def test_drugAmountForEachCategory():
     start = "2015-01-11 02:20:09"
     end = "2015-01-13 02:20:09"
     drugAmountForEachCategory = db.drugAmountForEachCategory(start,end)
-    assert drugAmountForEachCategory['category'] == "anti-Ebola"
-    assert drugAmountForEachCategory['drug_name'] == "ZMapp"
-    assert drugAmountForEachCategory['amount'] == "8"
+    assert drugAmountForEachCategory[0]['category'] == "anti-Ebola"
+    assert drugAmountForEachCategory[0]['drug_name'] == "ZMapp"
+    assert drugAmountForEachCategory[0]['amount'] == 8
 
 
 def test_totalAmountForEachCategory():
@@ -255,13 +260,12 @@ def test_totalAmountForEachCategory(start, end):
 
 def test_listMedicationsForDiagnosis():
     entry = db.listMedicationsForDiagnosis("Ebola")
-    assert entry[0]["frequency"] == "1"
-    assert entry[0]["drug_name"] == "Ebola"
+    assert entry[0]["frequency"] == 1
+    assert entry[0]["drug_name"] == "Viread"
 
 def test_listDiagnosesMadeBeforePrescribingDrug():
     
     drug_name = "ZMapp"
     
     listDiagnosesMadeBeforePrescribingDrug = db.listDiagnosesMadeBeforePrescribingDrug(drug_name)
-    assert test_listDiagnosesMadeBeforePrescribingDrug['diagnosis'] == 'Ebola'
-
+    assert listDiagnosesMadeBeforePrescribingDrug[0]['diagnosis'] == 'Ebola'
