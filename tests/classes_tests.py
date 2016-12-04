@@ -7,7 +7,6 @@ import pytest
 
 db.connectDB()
 
-'''
 def teardown_module():
     # reset db
 	f = open('test_db_files/proj_tables.sql','r')
@@ -18,7 +17,6 @@ def teardown_module():
 	db.c.executescript(sql)
 
 
-'''
 # CareStaff Tests
 def test_getCharts(capsys):
     doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
