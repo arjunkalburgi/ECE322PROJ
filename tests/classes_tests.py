@@ -1,16 +1,20 @@
 import sys
 from software.app_files.classes import Doctor
 from software.app_files.classes import Nurse
-from software.app_files.classes import Admin
+from software.app_files.classes import AdminStaff
 from software.app_files import database as db
 import pytest
 
+db.connectDB()
+
 # CareStaff Tests
 def test_getCharts():
-	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
-	doc.getCharts(patient)
-	# TODO
-
+    doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+    doc.getCharts(patient)
+    out=capsys.readouterr()
+    print(out)
+    assert False
+'''
 def test_printChartEntries():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	doc.printChartEntries(patient, chart_id)
@@ -150,4 +154,4 @@ def test_listDiagnosesMadeBeforePrescribingDrug():
     drug_name = "Heroin"
     assert adm.listDiagnosesMadeBeforePrescribingDrug(drug_name) == False
 
-
+'''
