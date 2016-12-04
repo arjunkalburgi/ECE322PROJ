@@ -1,5 +1,6 @@
 INSERT INTO staff  VALUES
-('14334', 'D', 'Phil McGraw', 'RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'), --'PugLove8', 'These Need Hashing'),
+('14334', 'D', 'Phil McGraw', 'RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'),
+('14479', 'D', 'Mehmet Oz', 'Q|Fcff{', 'KNqxgHcmgOgfkekpg'), --'PugLove8', 'These Need Hashing'),
 ('37225', 'N', 'Nurse Joy', 'Lq{3', 'Lq{345'), --'Joy1', 'Joy123'),
 ('63185', 'A', 'Abraham Jeffers', 'Lgtkejq', 'sygtv{'); --'Jericho', 'qwerty'),
 
