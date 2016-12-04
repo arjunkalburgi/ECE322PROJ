@@ -32,7 +32,7 @@ def test_getCharts(capsys):
 def test_printChartEntries(capsys):
     doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
     patient = doc.getPatient("15384")
-    print (doc.printChartEntries("15384", "10001"))
+    print (doc.printChartEntries(patient['hcno'], "10001"))
     out=capsys.readouterr()
     print (out)
     assert out == False
