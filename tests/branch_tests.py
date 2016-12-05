@@ -13,6 +13,8 @@ from software.app_files import database as db
 
 from software.app_files import login
 
+from tests.modified_app_files import nurse_mod
+
 db.connectDB()
 
 def teardown_module():
@@ -75,7 +77,7 @@ def test_db_isChartOpenForPatient():
 
     # if patient doesn't have an open chart
     assert db.isChartOpenForPatient('15384') == None
-    
+
 def test_db_createNewChartForPatient(): 
     '''
     db.createNewChartForPatient(hcno):
@@ -117,6 +119,7 @@ def test_classes_Doctor_getCharts():
     assert doc.getCharts('15384') == None
  
  #actually wrong, listDiagnosesMadeBeforePrescribingDrug doesn't return None
+
 def test_classes_Admin_listMedicationsForDiagnosis(): 
     '''
     classes.Admin.listMedicationsForDiagnosis(self, diagnosis):
@@ -138,6 +141,7 @@ def test_classes_Admin_listMedicationsForDiagnosis():
     assert adm.listMedicationsForDiagnosis('DoesNotExdgfsgdfsist') == False
     
  #actually wrong, listDiagnosesMadeBeforePrescribingDrug doesn't return None
+
 def test_classes_Admin_listDiagnosesMadeBeforePrescribingDrug(): 
     '''
     classes.Admin.listDiagnosesMadeBeforePrescribingDrug(self, drug_name):
@@ -197,7 +201,6 @@ def test_admin_listDiagnosisesForDrugFlow(capsys):
     out=capsys.readouterr()
     assert out[0] == 'That drug is not in the database'
 
-
 # From: nurse.py
 def test_nurse_getPatientFlow(capsys):
     '''
@@ -220,7 +223,6 @@ def test_nurse_getPatientFlow(capsys):
     out = capsys.readouterr()
     assert out[0] == 'The patient with that hcno does not exist! Please create a new patient:'
 
-    
 def test_nurse_selectChart(): 
     '''
     nurse.selectChart(nur, patient):
@@ -241,12 +243,29 @@ def test_nurse_selectChart():
                 else:
                     return chartId
     '''
-    # TODO
-    # patient has open chart; y - opens old chart;
-    # patient has open chart; n - 
-    # patient doesn't have open chart;
+    nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
+    # patient doesn't have open chart - opens old 
+    assert nurse_mod.selectChart(nur, nur.getPatient("15384"), True, '10001', True) == "10001"
+    # patient has open chart chooses not to - opens old
+    assert nurse_mod.selectChart(nur, nur.getPatient("20195"), False, '10009', True) == "10009"
     
+    # patient has open chart chooses not to - opens new
+    assert nurse_mod.selectChart(nur, nur.getPatient("20195"), True, '10009', True) == "10009"
+    # patient has open chart chooses not to - opens new
+    assert nurse_mod.selectChart(nur, nur.getPatient("20195"), False, 'new', True) == 10010
 
+    # patient doesn't have open chart - opens old 
+    assert nurse_mod.selectChart(nur, nur.getPatient("15384"), True, '10001', True) == "10001"
+    # patient has open chart chooses not to - opens new
+    assert nurse_mod.selectChart(nur, nur.getPatient("20195"), False, 'new', True) == 10011
+
+    # COULDN'T GET THIS WORKING
+        # patient doesn't have open chart - opens old 
+        # out = capsys.readouterr()
+        # nurse_mod.selectChart(nur, nur.getPatient("15384"), True, '10231', False)
+        # print(out)
+        # assert out[0] == "There was a problem, please type the chartid."
+    
 # From: doctor.py
 def test_doctor_getChartsFlow(capsys):
     '''
@@ -270,7 +289,6 @@ def test_doctor_getChartsFlow(capsys):
     assert out[0] == ''
     assert hcno == '15384'
 
-    
 def test_doctor_selectChart(capsys):
     '''
     doctor.selectChart(doc, patient):
@@ -293,7 +311,6 @@ def test_doctor_selectChart(capsys):
     out = capsys.readouterr()
     assert out[0] == ''
 
-    
 def test_doctor_addMedicationFlow(): 
     '''
     doctor.addMedicationFlow(doc, patient, chart):
