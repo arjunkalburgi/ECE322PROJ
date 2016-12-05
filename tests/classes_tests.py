@@ -7,6 +7,16 @@ import pytest
 
 db.connectDB()
 
+def setup_module():
+    # reset db
+    f = open('test_db_files/proj_tables.sql','r')
+    sql = f.read()
+    db.c.executescript(sql)
+    f = open('test_db_files/test_data.sql','r')
+    sql = f.read()
+    db.c.executescript(sql)
+    db.conn.commit()
+
 def teardown_module():
     # reset db
     f = open('test_db_files/proj_tables.sql','r')
@@ -141,13 +151,13 @@ def test_newPatient():
 
 def test_checkIfPatientHasOpenChart():
     nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
-    assert nur.checkIfPatientHasOpenChart("15384") == True
-    assert nur.checkIfPatientHasOpenChart("20195") == False
+    assert nur.checkIfPatientHasOpenChart("15384") == "10010"
+    assert nur.checkIfPatientHasOpenChart("20195") == "10009"
 
 def test_closeChart():
     nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
 
-    chartid = db.createNewChartForPatient("15384")
+    chart_id = db.createNewChartForPatient("15384")
     if db.isChartOpenForPatient("15384") != None: 
         nur.closeChart(chart_id)
         assert db.isChartOpenForPatient("15384") == None
@@ -161,7 +171,7 @@ def test_listDrugAmtForEachDoctor(capsys):
     adm.listDrugAmtForEachDoctor(start, end)
     out=capsys.readouterr()
     print (out)
-    assert out[0] == 'Report: Drug Amount Prescribed For Each Doctor Between 2015-01-11 19:50:32 and 2015-01-13 19:50:32:\n-----------------------\n- drug_name: Retrovir\n- DoctorName: Mehmet Oz\n- total_amount: 85\n-----------------------\n- drug_name: ZMapp\n- DoctorName: Phil McGraw\n- total_amount: 8\n'
+    assert out[0] == 'Report: Drug Amount Prescribed For Each Doctor Between 2015-01-11 19:50:32 and 2015-01-13 19:50:32:\n-----------------------\n- drug_name: Retrovir\n- DoctorName: Mehmet Oz\n- total_amount: 85\n-----------------------\n- drug_name: Viread\n- DoctorName: Phil McGraw\n- total_amount: 16\n'
 
 def test_listDrugAmtForEachCategory(capsys):
     start = "2015-01-11 19:50:32"
