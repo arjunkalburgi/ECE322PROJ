@@ -74,7 +74,6 @@ def test_addDiagnosis():
 
 def test_checkMedicationAmountValid():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
-	doc.checkMedicationAmountValid(drug_name, amount, age_group)
 	assert doc.checkMedicationAmountValid("ZMapp", "10", "18-39") == False
 	assert doc.checkMedicationAmountValid("ZMapp", "5", "18-39") == True
 
@@ -104,7 +103,7 @@ def test_addMedication():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	doc.addMedication("15384", '10001', '14334', "2015-01-22 19:50:32", "2015-02-22 02:51:33", "Viread", "8")
 
-	entry = db.medicationsForPatientAndChart(hcno, chart_id)
+	entry = db.medicationsForPatientAndChart("15384", "10001")
 	assert entry["hcno"] == "15384"
 	assert entry["chart_id"] == '10001'
 	assert entry["staff_id"] == '14334'
