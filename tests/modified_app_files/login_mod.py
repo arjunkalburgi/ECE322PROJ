@@ -23,17 +23,15 @@ def beginFlow(user):
 		return True
 	return False
 
-def start():
-	username = 'Joy1'
-	password = 'Joy123'
+def start(username, password, boolNewUser):
 
 	user = getUser(encrypt(username), encrypt(password)) # return obj of user info, or None if can't be found
 
 	if user is not None:
-		return True
+		return "Begin user flow"
 	else:
-		if "y" == "y":
+		if boolNewUser:
 			user = createUser(raw_input("Role (D, N or A) "), raw_input("Name "), encrypt(username), encrypt(password))
-			beginFlow(user)
+			return "Create user flow"
 		else:
-			start()
+			return "start()"

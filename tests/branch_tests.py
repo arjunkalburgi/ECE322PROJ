@@ -364,7 +364,10 @@ def test_login_start():
             else:
                 start()
     '''
-    # TODO
-    # test 1 
-    # test 2
+    # proper user
+    assert login_mod.start('Joy1', 'Joy123', False) == "Begin user flow"
+    # improper user | not new user
+    assert login_mod.start('Joys1', 'Joy1fd23', False) == "start()"
+    # improper user | new user
+    assert login_mod.start('Joys1', 'Joy1fd23', True) == "Create user flow"
     
