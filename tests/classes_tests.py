@@ -25,7 +25,7 @@ def test_getCharts(capsys):
     doc.getCharts(patient['hcno'])
     out=capsys.readouterr()
     print(out)
-    assert out[0] == '''Charts for patient with health care number 15384:\nChart 1:\n- adate: 2015-01-06 12:24:56\n- name: Angelina Jolie\n- edate: 2015-02-13 10:35:42\n- phone: 7801234567\n- hcno: 15384\n- address: 123-120 ST, Edmonton, Alberta\n- chart_id: 10001\n- emg_phone: 7801234567\n- age_group: 18-39\n'''
+    assert out[0] == 'Charts for patient with health care number 15384:\nChart 1:\n- adate: 2015-01-06 12:24:56\n- name: Angelina Jolie\n- edate: 2015-02-13 10:35:42\n- phone: 7801234567\n- hcno: 15384\n- address: 123-120 ST, Edmonton, Alberta\n- chart_id: 10001\n- emg_phone: 7801234567\n- age_group: 18-39\n'
 
 def test_printChartEntries(capsys):
     doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
@@ -34,7 +34,7 @@ def test_printChartEntries(capsys):
     out=capsys.readouterr()
     print (out)
     assert out[0] == 'Symptom 1:\n- chart_id: 10001\n- obs_date: 2015-01-08 18:22:55\n- staff_id: 37225\n- symptom: Nausea\n- hcno: 15384\nDiagnosis 1:\n- chart_id: 10001\n- diagnosis: Ebola\n- staff_id: 14334\n- ddate: 2015-01-11 14:06:01\n- hcno: 15384\nMedication 1:\n- staff_id: 14334\n- mdate: 2015-01-12 02:20:09\n- hcno: 15384\n- drug_name: ZMapp\n- amount: 8\n- start_med: 2015-01-12 19:50:32\n- end_med: 2015-02-21 02:51:33\n- chart_id: 10001\nTrue\n'
-'''
+
 def test_getPatient():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
 	patient = doc.getPatient("15384")
@@ -92,9 +92,13 @@ def test_checkPatientAllergicToDrug():
 	assert doc.checkPatientAllergicToDrug("15384", "ZMapp") == False
 
 def test_checkInferredAllergyToDrug():
-	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
-	doc.checkInferredAllergyToDrug(hcno, drug_name)
-	# return inferredAllergy(hcno, drug_name)
+
+    doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+    inferred = doc.checkInferredAllergyToDrug('15384', "ZMapp")
+    
+    assert inferred == None
+
+
 
 def test_addMedication():
 	doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
@@ -117,14 +121,25 @@ def test_introduce():
 	assert nur.introduce() == "I'm a Nurse"
 
 def test_newChart():
-	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
-	nur.newChart(hcno)
-	# return createNewChartForPatient(hcno)
+
+    nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
+    newChart = nur.newChart("15384")
+    print(newChart)
+    assert newChart == 10009
+
 
 def test_newPatient():
-	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
-	nur.newPatient(hcno, name, age_group, address, phone, emg_phone)
-	# createPatient(hcno, name, age_group, address, phone, emg_phone)
+
+    nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
+    newpatient = nur.newPatient("3", "Aaron", "18-39", "The zoo",
+                             "000000000", "000000")
+    patient = db.getPatientWithHcno('3')
+    
+    assert patient["hcno"] == '3'
+    assert patient["name"] == 'Aaron'
+    assert patient["phone"] =='000000000'
+    assert patient["address"] == "The zoo"
+
 
 def test_checkIfPatientHasOpenChart():
 	nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
@@ -141,18 +156,23 @@ def test_closeChart():
 
 
 # Admin tests
-def test_listDrugAmtForEachDoctor():
+def test_listDrugAmtForEachDoctor(capsys):
     start = "2015-01-11 19:50:32"
     end = "2015-01-13 19:50:32"
-    adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
+    adm = AdminStaff(db.getUser('Lgtkejq', 'sygtv{'))
     adm.listDrugAmtForEachDoctor(start, end)
+    out=capsys.readouterr()
+    print (out)
+    assert out[0] == 'Report: Drug Amount Prescribed For Each Doctor Between 2015-01-11 19:50:32 and 2015-01-13 19:50:32:\n-----------------------\n- drug_name: Retrovir\n- DoctorName: Mehmet Oz\n- total_amount: 85\n-----------------------\n- drug_name: ZMapp\n- DoctorName: Phil McGraw\n- total_amount: 8\n'
 
-
-def test_listDrugAmtForEachCategory():
+def test_listDrugAmtForEachCategory(capsys):
     start = "2015-01-11 19:50:32"
     end = "2015-01-13 19:50:32"
-	adm = Admin(db.getUser('Lgtkejq', 'sygtv{'))
-	adm.listDrugAmtForEachCategory(start, end)
+    adm = AdminStaff(db.getUser('Lgtkejq', 'sygtv{'))
+    adm.listDrugAmtForEachCategory(start, end)
+    out=capsys.readouterr()
+    print (out)
+    assert out[0] == 'Report Part 1: Drug Amount Prescribed For Each Category Between 2015-01-11 19:50:32 and 2015-01-13 19:50:32\n-----------------------\n- category: anti-Ebola\n- drug_name: ZMapp\n- amount: 8\n-------------------------------------------------\nReport Part 2: Total Amount Prescribed For Each Category Between 2015-01-11 19:50:32 and 2015-01-13 19:50:32\n-----------------------\n- category: anti-Ebola\n- total: 8\n'
 
 def test_listMedicationsForDiagnosis():
     diagnosis = "Ebola"
@@ -168,5 +188,4 @@ def test_listDiagnosesMadeBeforePrescribingDrug():
 	assert adm.listDiagnosesMadeBeforePrescribingDrug(drug_name) == True
     drug_name = "Heroin"
     assert adm.listDiagnosesMadeBeforePrescribingDrug(drug_name) == False
-
 
