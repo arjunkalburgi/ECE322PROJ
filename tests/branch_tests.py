@@ -25,6 +25,13 @@ def teardown_module():
     db.c.executescript(sql)
     db.conn.commit()
 
+def db_wipe():
+    f = open('test_db_files/proj_tables.sql','r')
+    sql = f.read()
+    db.c.executescript(sql)
+    db.conn.commit()
+
+
 # From: database.py
 def test_db_createUser(): 
     ''' 
@@ -47,8 +54,8 @@ def test_db_createUser():
     assert newuser['login'] == username
     assert newuser['password'] == password
 
-    # if db doesn't have staff
-        # TODO: delete everything in staff
+    # if db doesnt have staff
+    db_wipe()
     username = "Lq{3"
     password = "Lq{345"
     newuser = db.createUser("D", "doc", username, password)
@@ -81,12 +88,13 @@ def test_db_createNewChartForPatient():
         conn.commit()
         return new_id
     '''
-    # TODO NOT WORKING PROPERLY...
-    # if db has a chart for the user
-    assert db.createNewChartForPatient('15384') == 10010
 
+    # if db has a chart for the user
+    assert db.createNewChartForPatient('15384') == "10010"
+
+    db_wipe()
     # if there isn't a patient hcno
-    assert db.createNewChartForPatient('395') == 10011
+    assert db.createNewChartForPatient('395') == "0"
 
 # From: classes.py
 def test_classes_Doctor_getCharts(): 
@@ -150,7 +158,7 @@ def test_classes_Admin_listDiagnosesMadeBeforePrescribingDrug():
     assert adm.listDiagnosesMadeBeforePrescribingDrug("Heroin") == False
     
 # From: admin.py
-def test_admin_listMedicationsForDiagnosisFlow(): 
+def test_admin_listMedicationsForDiagnosisFlow(capsys):
     '''
     admin.listMedicationsForDiagnosisFlow(adm):
         diagnosis = raw_input("Which diagnosis would you like to search? ")
@@ -160,12 +168,16 @@ def test_admin_listMedicationsForDiagnosisFlow():
     adm = AdminStaff(db.getUser('Lgtkejq', 'sygtv{'))
     # if there are medications for diagnosis
     admfile.listMedicationsForDiagnosisFlow(adm)
-        # TODO: how to influence raw_input (write "Ebola") and check that nothing prints?
-    # if there are medications for diagnosis
-    admfile.listMedicationsForDiagnosisFlow(adm)
-        # TODO: how to influence raw_input (write "DoesNotExist") and check that something prints?
+    out=capsys.readouterr()
+    assert out[0] == ''
     
-def test_admin_listDiagnosisesForDrugFlow(): 
+    # if there are medications for diagnosis
+    db_wipe()
+    admfile.listMedicationsForDiagnosisFlow(adm)
+    out=capsys.readouterr()
+    assert out[0] == 'That diagnosis is not in the database'
+    
+def test_admin_listDiagnosisesForDrugFlow(capsys):
     '''
     admin.listDiagnosisesForDrugFlow(adm):
         drug = raw_input("Which drug would you like to search? ")
@@ -173,16 +185,21 @@ def test_admin_listDiagnosisesForDrugFlow():
             print("That drug is not in the database")
     '''
     adm = AdminStaff(db.getUser('Lgtkejq', 'sygtv{'))
+
     # if there are diagnosis for drug
     admfile.listMedicationsForDiagnosisFlow(adm)
-        # TODO: how to influence raw_input (write "ZMapp") and check that nothing prints?
-    # if there are diagnosis for drug
+    out=capsys.readouterr()
+    assert out[0] == ''
+
+    # if there are no diagnosis for drug
+    db_wipe()
     admfile.listMedicationsForDiagnosisFlow(adm)
-        # TODO: how to influence raw_input (write "Heroin") and check that something prints?
-    
+    out=capsys.readouterr()
+    assert out[0] == 'That drug is not in the database'
+
 
 # From: nurse.py
-def test_nurse_getPatientFlow(): 
+def test_nurse_getPatientFlow(capsys):
     '''
     nurse.getPatientFlow(nur):
         patient_hcno = raw_input("What patient are you working with today? (hcno) ")
@@ -193,11 +210,16 @@ def test_nurse_getPatientFlow():
     '''
     nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
     # if user exists
-    nurfile.getPatientFlow(nur)
-        # TODO: how to influence raw_input (write "15384") and check hcno 15384 is returned - nothing prints
+    hcno = nurfile.getPatientFlow(nur)
+    out = capsys.readouterr()
+    assert out[0] == ''
+    assert hcno == '15384'
+
     # if patient doesn't exist
     nurfile.getPatientFlow(nur)
-        # TODO: how to influence raw_input (write "35434") and check that something prints
+    out = capsys.readouterr()
+    assert out[0] == 'The patient with that hcno does not exist! Please create a new patient:'
+
     
 def test_nurse_selectChart(): 
     '''
@@ -226,7 +248,7 @@ def test_nurse_selectChart():
     
 
 # From: doctor.py
-def test_doctor_getChartsFlow(): 
+def test_doctor_getChartsFlow(capsys):
     '''
     doctor.getChartsFlow(doc):
         patient_hcno = raw_input("What patient are you working with today? (hcno) ")
@@ -239,12 +261,17 @@ def test_doctor_getChartsFlow():
     doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
     # if there is no patient with that hcno 
     docfile.getChartsFlow(doc)
-        # TODO on raw input put 15385 and see something should be printed.
-    # test 2
-    docfile.getChartsFlow(doc) 
-        # TODO on raw input put 15384 and see that nothing is printed.
+    out = capsys.readouterr()
+    assert out[0] == '''That is not a patient's hcno that we have registered. Please use hcno for the patient. '''
     
-def test_doctor_selectChart(): 
+    # test 2
+    hcno = docfile.getChartsFlow(doc)
+    out = capsys.readouterr()
+    assert out[0] == ''
+    assert hcno == '15384'
+
+    
+def test_doctor_selectChart(capsys):
     '''
     doctor.selectChart(doc, patient):
         chartId = raw_input("Which chart would you like to open? (select id) ")
@@ -254,11 +281,18 @@ def test_doctor_selectChart():
         return chartId
     '''
     doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
-    # if there is no chart id  
+    # if there is no chart id
+    # do not input 10001
     docfile.selectChart(doc, "15384")
-        # TODO on raw input put 10551 and see "There was a prob" should be printed.
+    out = capsys.readouterr()
+    assert out[0] == 'There was a problem, please type the chartid. '
+
     # if there is a chart id
-        # TODO on second raw input prompt put 10001 and see "There was a prob" is not printed.
+    # input 10001
+    docfile.selectChart(doc, "15384")
+    out = capsys.readouterr()
+    assert out[0] == ''
+
     
 def test_doctor_addMedicationFlow(): 
     '''
