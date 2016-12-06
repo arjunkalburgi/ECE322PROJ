@@ -1,0 +1,5 @@
+'Test case number', 'Function title', 'Expected Result', 'Actual Result'
+1, "encrypt",		 "Shifts characters 2 to the left",	 				 "Expected"
+2, "decrypt",		 "Shifts characters 2 to the right",	 			 "Function does nothing - this is because it is unused! Another encrypt function is (login.py)"
+3, "beginFlow",		 "Returns boolean with real/fake staff", 			 "Expected"
+4, "start",			 "Returns string based on branch - see branch_tests","Expected"

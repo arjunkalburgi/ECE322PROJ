@@ -67,7 +67,7 @@ def test_addSymptom():
     assert entry["symptom"] == "Nausea"
 
 # Doctor Tests
-def test_introduce():
+def test_docIntroduce():
     doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
     assert doc.introduce() == "I'm a Doctor"
 
@@ -124,7 +124,7 @@ def test_addMedication():
 
 
 # Nurse Tests
-def test_introduce():
+def test_nurIntroduce():
     nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
     assert nur.introduce() == "I'm a Nurse"
 
@@ -151,8 +151,8 @@ def test_newPatient():
 
 def test_checkIfPatientHasOpenChart():
     nur = Nurse(db.getUser('Lq{3', 'Lq{345'))
-    assert nur.checkIfPatientHasOpenChart("15384") == "10010"
     assert nur.checkIfPatientHasOpenChart("20195") == "10009"
+    assert nur.checkIfPatientHasOpenChart("15384") == None
 
 def test_closeChart():
     nur = Nurse(db.getUser('Lq{3', 'Lq{345'))

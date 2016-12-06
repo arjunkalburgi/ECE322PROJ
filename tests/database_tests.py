@@ -239,24 +239,6 @@ def test_totalAmountForEachCategory():
     assert totalAmountForEachCategory['category'] == "anti-Ebola"
     assert totalAmountForEachCategory['total'] == "8"
 
-    entry = db.drugAmountForEachCategory("2015-01-11 19:50:32", "2015-02-22 02:51:33")
-    assert entry[0]["hcno"] == "15384"
-    assert entry[0]["chart_id"] == '10001'
-    assert entry[0]["staff_id"] == '14334'
-    assert entry[0]["mdate"] == "2015-01-12 02:20:09"
-    assert entry[0]["start_med"] == "2015-01-12 19:50:32"
-    assert entry[0]["end_med"] == "2015-02-21 02:51:33"
-    assert entry[0]["amount"] == "8"
-    assert entry[0]["drug_name"] == "ZMapp"
-
-def test_totalAmountForEachCategory(start, end):
-    
-    start = "2015-01-11 02:20:09"
-    end = "2015-01-13 02:20:09"
-    totalAmountForEachCategory = db.totalAmountForEachCategory(start,end)
-    assert totalAmountForEachCategory['category'] == 'anti-Ebola'
-    assert totalAmountForEachCategory['total'] == "8"
-
 
 def test_listMedicationsForDiagnosis():
     entry = db.listMedicationsForDiagnosis("Ebola")

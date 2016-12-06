@@ -249,7 +249,7 @@ def test_nurse_selectChart():
     # patient has open chart chooses not to - opens old
     assert nurse_mod.selectChart(nur, nur.getPatient("20195"), False, '10009', True) == "10009"
     
-    # patient has open chart chooses not to - opens new
+    # patient has open chart chooses to open it
     assert nurse_mod.selectChart(nur, nur.getPatient("20195"), True, '10009', True) == "10009"
     # patient has open chart chooses not to - opens new
     assert nurse_mod.selectChart(nur, nur.getPatient("20195"), False, 'new', True) == 10010
@@ -283,7 +283,7 @@ def test_doctor_getChartsFlow(capsys):
     out = capsys.readouterr()
     assert out[0] == '''That is not a patient's hcno that we have registered. Please use hcno for the patient. '''
     
-    # test 2
+    # if patient with hcno exists
     hcno = docfile.getChartsFlow(doc)
     out = capsys.readouterr()
     assert out[0] == ''
@@ -364,10 +364,10 @@ def test_login_start():
             else:
                 start()
     '''
-    # proper user
+    # if proper user
     assert login_mod.start('Joy1', 'Joy123', False) == "Begin user flow"
-    # improper user | not new user
+    # if improper user | not new user
     assert login_mod.start('Joys1', 'Joy1fd23', False) == "start()"
-    # improper user | new user
+    # if improper user | new user
     assert login_mod.start('Joys1', 'Joy1fd23', True) == "Create user flow"
     

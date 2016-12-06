@@ -13,8 +13,6 @@ def test_decrypt():
 
 def test_beginFlow():
 	assert login_mod.beginFlow(db.getUser("Lq{3","Lq{345")) == True
-	# assert login_mod.beginFlow(db.getUser("Lasdfq{3","Lfsdq{345")) == False
-	# TODO - doesn't run but we don't have to run this right?
 
 def test_start():
 	assert login_mod.start('Joy1', 'Joy123', False) == "User flow began 1"
