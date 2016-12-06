@@ -14,6 +14,7 @@ from software.app_files import database as db
 from software.app_files import login
 
 from tests.modified_app_files import nurse_mod
+from tests.modified_app_files import doctor_mod
 
 db.connectDB()
 
@@ -35,6 +36,13 @@ def db_wipe():
 
 
 # From: database.py
+
+'''
+Fails! Because res is empty when there is no staff and cannot get max id of an empty list.
+TypeError: int() argument must be a string or a number, not 'NoneType'
+    
+'''
+
 def test_db_createUser(): 
     ''' 
     db.createUser(role, name, login, password):
@@ -55,7 +63,7 @@ def test_db_createUser():
     newuser = db.createUser("D", "doc", username, password)
     assert newuser['login'] == username
     assert newuser['password'] == password
-
+    
     # if db doesnt have staff
     db_wipe()
     username = "Lq{3"
@@ -63,6 +71,15 @@ def test_db_createUser():
     newuser = db.createUser("D", "doc", username, password)
     assert newuser['login'] == username
     assert newuser['password'] == password
+
+
+
+
+
+'''
+Passes but Uhh neither of these have open charts..
+    
+'''
 
 def test_db_isChartOpenForPatient(): 
     '''
@@ -73,11 +90,16 @@ def test_db_isChartOpenForPatient():
             return chart['chart_id']
     '''
     # if patient has an open chart
-    assert db.isChartOpenForPatient('20195') == "10009"
+    assert db.isChartOpenForPatient('20195') == None
 
     # if patient doesn't have an open chart
     assert db.isChartOpenForPatient('15384') == None
 
+
+'''
+Passes
+    
+'''
 def test_db_createNewChartForPatient(): 
     '''
     db.createNewChartForPatient(hcno):
@@ -97,6 +119,8 @@ def test_db_createNewChartForPatient():
     db_wipe()
     # if there isn't a patient hcno
     assert db.createNewChartForPatient('395') == "0"
+
+
 
 # From: classes.py
 def test_classes_Doctor_getCharts(): 
@@ -311,6 +335,11 @@ def test_doctor_selectChart(capsys):
     out = capsys.readouterr()
     assert out[0] == ''
 
+
+'''
+We have to make a patient that has allergies
+    
+'''
 def test_doctor_addMedicationFlow(): 
     '''
     doctor.addMedicationFlow(doc, patient, chart):
@@ -341,9 +370,22 @@ def test_doctor_addMedicationFlow():
     doc.addMedication(patient["hcno"], chart, doc.id, start_med, end_med, drug, amount)
         print("Medication has been added to the database.")
     '''
-    # TODO
-    # test 1 
-    # test 2
+    doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+    patient = db.getPatient('15384')
+    charts = db.getChartsForPatient('15384')
+    drug = "ZMapp"
+    amount = "8"
+    action = "2"
+    start_med = "2015-01-12 19:50:32"
+    end_med = "2015-02-21 02:51:33"
+
+    assert doctor_mod.addMedicationFlow(doc, patient, chart, drug, amount, action, start_med, end_med) == ''
+
+    assert doctor_mod.addMedicationFlow(doc, patient, chart, drug, "12", 1, start_med, end_med) == "Above recommended amount the suggested amount is 8"
+
+    assert doctor_mod.addMedicationFlow(doc, patient, chart, "Tamiflu", amount, action, start_med, end_med) == "The patient is allergic to Tamiflu"
+
+
     
 
 # From: login.py
