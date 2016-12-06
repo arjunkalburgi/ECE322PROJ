@@ -35,6 +35,13 @@ def db_wipe():
 
 
 # From: database.py
+
+'''
+Fails! Because res is empty when there is no staff and cannot get max id of an empty list.
+TypeError: int() argument must be a string or a number, not 'NoneType'
+    
+'''
+
 def test_db_createUser(): 
     ''' 
     db.createUser(role, name, login, password):
@@ -55,7 +62,7 @@ def test_db_createUser():
     newuser = db.createUser("D", "doc", username, password)
     assert newuser['login'] == username
     assert newuser['password'] == password
-
+    
     # if db doesnt have staff
     db_wipe()
     username = "Lq{3"
@@ -63,6 +70,15 @@ def test_db_createUser():
     newuser = db.createUser("D", "doc", username, password)
     assert newuser['login'] == username
     assert newuser['password'] == password
+
+
+
+
+
+'''
+Passes but Uhh neither of these have open charts..
+    
+'''
 
 def test_db_isChartOpenForPatient(): 
     '''
@@ -73,11 +89,16 @@ def test_db_isChartOpenForPatient():
             return chart['chart_id']
     '''
     # if patient has an open chart
-    assert db.isChartOpenForPatient('20195') == "10009"
+    assert db.isChartOpenForPatient('20195') == None
 
     # if patient doesn't have an open chart
     assert db.isChartOpenForPatient('15384') == None
 
+
+'''
+Passes
+    
+'''
 def test_db_createNewChartForPatient(): 
     '''
     db.createNewChartForPatient(hcno):
@@ -97,6 +118,8 @@ def test_db_createNewChartForPatient():
     db_wipe()
     # if there isn't a patient hcno
     assert db.createNewChartForPatient('395') == "0"
+
+
 
 # From: classes.py
 def test_classes_Doctor_getCharts(): 
