@@ -14,6 +14,7 @@ from software.app_files import database as db
 from software.app_files import login
 
 from tests.modified_app_files import nurse_mod
+from tests.modified_app_files import doctor_mod
 
 db.connectDB()
 
@@ -334,6 +335,11 @@ def test_doctor_selectChart(capsys):
     out = capsys.readouterr()
     assert out[0] == ''
 
+
+'''
+We have to make a patient that has allergies
+    
+'''
 def test_doctor_addMedicationFlow(): 
     '''
     doctor.addMedicationFlow(doc, patient, chart):
@@ -364,9 +370,22 @@ def test_doctor_addMedicationFlow():
     doc.addMedication(patient["hcno"], chart, doc.id, start_med, end_med, drug, amount)
         print("Medication has been added to the database.")
     '''
-    # TODO
-    # test 1 
-    # test 2
+    doc = Doctor(db.getUser('RwiNqxg:', 'Vjgug"Pggf"Jcujkpi'))
+    patient = db.getPatient('15384')
+    charts = db.getChartsForPatient('15384')
+    drug = "ZMapp"
+    amount = "8"
+    action = "2"
+    start_med = "2015-01-12 19:50:32"
+    end_med = "2015-02-21 02:51:33"
+
+    assert doctor_mod.addMedicationFlow(doc, patient, chart, drug, amount, action, start_med, end_med) == ''
+
+    assert doctor_mod.addMedicationFlow(doc, patient, chart, drug, "12", 1, start_med, end_med) == "Above recommended amount the suggested amount is 8"
+
+    assert doctor_mod.addMedicationFlow(doc, patient, chart, "Tamiflu", amount, action, start_med, end_med) == "The patient is allergic to Tamiflu"
+
+
     
 
 # From: login.py
